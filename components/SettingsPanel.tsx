@@ -14,6 +14,7 @@ interface SettingsPanelProps {
   onTogglePieceRotation: () => void;
   timeControl: 'none' | '10min' | 'custom';
   onSetTimeControl: (mode: 'none' | '10min' | 'custom') => void;
+  gameMode: 'pvc' | 'pvp';
 }
 
 const SettingsRow: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
@@ -58,7 +59,8 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
     enablePieceRotation,
     onTogglePieceRotation,
     timeControl,
-    onSetTimeControl
+    onSetTimeControl,
+    gameMode,
  }) => {
 
   return (
@@ -96,7 +98,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                       <ToggleSwitch isOn={enableHints} onToggle={onToggleHints} />
                   </SettingsRow>
                    <SettingsRow label="Piece Rotation">
-                      <ToggleSwitch isOn={enablePieceRotation} onToggle={onTogglePieceRotation} />
+                      <ToggleSwitch isOn={enablePieceRotation} onToggle={onTogglePieceRotation} disabled={gameMode === 'pvc'} />
                   </SettingsRow>
               </div>
           </div>
