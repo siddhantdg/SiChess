@@ -1,7 +1,16 @@
+
 import { Chess, Move } from 'chess.js';
+import { Difficulty } from '../types';
 
 const pieceValues: { [key: string]: number } = {
   p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000,
+};
+
+const difficultySettings: Record<Difficulty, { depth: number; errorRate: number }> = {
+  beginner: { depth: 1, errorRate: 0.7 },
+  intermediate: { depth: 2, errorRate: 0.4 },
+  advanced: { depth: 2, errorRate: 0.1 },
+  master: { depth: 3, errorRate: 0 },
 };
 
 // Positional values (simplified piece-square tables)
@@ -18,7 +27,7 @@ const pawnPos = [
 ];
 // ... (add more for other pieces for better AI, but this is a start)
 
-const evaluateBoard = (game: Chess) => {
+export const evaluateBoard = (game: Chess): number => {
   if (game.isCheckmate()) {
     return game.turn() === 'b' ? Infinity : -Infinity;
   }
@@ -44,7 +53,6 @@ const evaluateBoard = (game: Chess) => {
   return totalEvaluation;
 };
 
-const SEARCH_DEPTH = 2; // Keep it low for performance in browser
 
 const minimax = (game: Chess, depth: number, alpha: number, beta: number, isMaximizingPlayer: boolean): number => {
     if (depth === 0 || game.isGameOver()) {
@@ -83,8 +91,8 @@ const minimax = (game: Chess, depth: number, alpha: number, beta: number, isMaxi
     }
 };
 
-export const findBestMove = (game: Chess): Promise<Move | null> => {
-    return new Promise((resolve) => {
+export const findBestMoveForAnalysis = (game: Chess, depth: number): Promise<Move | null> => {
+     return new Promise((resolve) => {
         setTimeout(() => {
             const newGameMoves = game.moves({ verbose: true });
             if (newGameMoves.length === 0) {
@@ -99,7 +107,7 @@ export const findBestMove = (game: Chess): Promise<Move | null> => {
             for (const move of newGameMoves) {
                 const gameCopy = new Chess(game.fen());
                 gameCopy.move(move);
-                const boardValue = minimax(gameCopy, SEARCH_DEPTH - 1, -Infinity, Infinity, !isMaximizing);
+                const boardValue = minimax(gameCopy, depth - 1, -Infinity, Infinity, !isMaximizing);
                 
                 if (isMaximizing) {
                     if (boardValue > bestValue) {
@@ -114,7 +122,26 @@ export const findBestMove = (game: Chess): Promise<Move | null> => {
                 }
             }
             resolve(bestMoveFound);
-        }, 50); // Small timeout to unblock UI thread
+        }, 10); // Small timeout to unblock UI thread
+    });
+}
+
+export const findComputerMove = (game: Chess, difficulty: Difficulty): Promise<Move | null> => {
+    return new Promise((resolve) => {
+        const settings = difficultySettings[difficulty];
+        findBestMoveForAnalysis(game, settings.depth).then(bestMoveFound => {
+            if (!bestMoveFound) {
+                resolve(null);
+                return;
+            }
+            const allMoves = game.moves({verbose: true});
+            if (allMoves.length > 1 && Math.random() < settings.errorRate) {
+                const nonBestMoves = allMoves.filter(m => m.san !== bestMoveFound.san);
+                resolve(nonBestMoves[Math.floor(Math.random() * nonBestMoves.length)]);
+            } else {
+                resolve(bestMoveFound);
+            }
+        })
     });
 };
 
