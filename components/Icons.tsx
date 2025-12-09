@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const ArrowLeft: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -43,6 +44,12 @@ const Undo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
+const Resign: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+        <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z" />
+    </svg>
+);
+
 const Player: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -85,29 +92,59 @@ const Instagram: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
+const Pawn: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M15 9.5c0 1.38-1.12 2.5-2.5 2.5S10 10.88 10 9.5 11.12 7 12.5 7s2.5 1.12 2.5 2.5zM12.5 2C10.57 2 9 3.57 9 5.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5S14.43 2 12.5 2zM5 20h15v2H5v-2zm0-2h15v-1c0-2.21-1.79-4-4-4H9c-2.21 0-4 1.79-4 4v1z"/></svg>
+);
 
-// Minimalist Piece Icons for Move History
-const PiecePawn: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}>
-      <path d="M22.5 10c-2.49 0-4.5 2.01-4.5 4.5S20.01 19 22.5 19s4.5-2.01 4.5-4.5S24.99 10 22.5 10zm0 10c-4.14 0-7.5 1.57-7.5 3.5V26h15v-2.5c0-1.93-3.36-3.5-7.5-3.5zm-7.5 7.5V35h15v-7.5h-15z" />
+const Knight: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M12.57 2.14c-1.89.28-3.48 1.44-4.5 2.86-.78 1.08-1.24 2.3-1.35 3.57-.13 1.51.36 2.94 1.28 4.08L6 15.47v2.03h2.2v-1.7l1.79-1.79c.14.43.36.83.64 1.2l-.39.39-1.06 1.06-2.12 2.12h14.14l-2.12-2.12-1.06-1.06-.39-.39c.28-.37.5-.77.64-1.2l1.79 1.79V17.5h2.2v-2.03l-1.99-2.82c.92-1.14 1.4-2.57 1.28-4.08-.11-1.27-.57-2.49-1.35-3.57-1.02-1.42-2.61-2.58-4.5-2.86M11 5.3c.63-.9 1.58-1.5 2.65-1.5s2.02.6 2.65 1.5c.98 1.35.82 3.1-.38 4.25-.97.92-2.38 1.19-3.62.68l-2.07 2.93h6.14l-2.07-2.93c-1.24.51-2.65.24-3.62-.68-1.2-1.15-1.36-2.9-.38-4.25z"/></svg>
+);
+
+const Rook: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M5 20h14v2H5v-2zm0-2h14v-1c0-2.21-1.79-4-4-4H9c-2.21 0-4 1.79-4 4v1zm7.5-12.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM15 2H9v6h6V2zm-2 4h-2V4h2v2z"/></svg>
+);
+
+const Queen: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M5 20h14v2H5v-2zm0-2h14v-1c0-2.21-1.79-4-4-4H9c-2.21 0-4 1.79-4 4v1zm7-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5.22 4.39l1.41 1.41C9.26 11.23 10.54 12 12 12s2.74-.77 3.81-2.2l1.41-1.41L18.64 5l-1.41-1.41L15.81 5l-1.04-1.04-1.41 1.41-1.36 1.36-1.36-1.36-1.41-1.41L8.15 5l-1.41-1.41L5.32 5l1.41 1.41L8.15 7.83l-1.36 1.36z"/></svg>
+);
+
+const Analyse: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+
+// Icons for color selection using actual piece images
+const KingWhite: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 150 150" {...props}>
+      <image href="https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wk.png" width="150" height="150" />
     </svg>
 );
-const PieceKing: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}><path d="M22.5 11.63V6M20 8h5m-2.5 3.63V26h-15l-2.5 13h30l-2.5-13H25V11.63zM12.5 32h20"></path></svg>
-);
-const PieceQueen: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}><path d="M11 14l-2.5 11.5L11 35h23l2.5-9.5L34 14l-4 8.5-6.5-13-6.5 13-4-8.5zM11 35h23"></path></svg>
-);
-const PieceRook: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}><path d="M9 39h27v-3H9v3zM12 36v-4h21v4H12zM11 14V9h4v2h5V9h5v2h5V9h4v5h-3v14h3v5H11v-5h3V14h-3z"></path></svg>
-);
-const PieceBishop: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}><path d="M9 36h27v3H9v-3zM15 33h15l-7.5-18L15 33zM22.5 25a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zM18 10a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"></path></svg>
-);
-const PieceKnight: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 45 45" fill="currentColor" {...props}><path d="M22 10c10.5 1 16.5 8 16 29H15c-2.5 0-4-2.5-4-4 0-2 1.5-4 4-4 0-3.5 3-7 6-7s6 3.5 6 7-1 3-1 3-3 1-3.5 3h13s0-1-1-3-3-3-3-3c-3-1-5-4.5-5-8.5s2.5-8 7.5-10c-.5-1-1.5-2-3-2-2.5 0-3 2.5-3 2.5s-2-2-4-2-4 2-4 2z"></path></svg>
+
+const KingBlack: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 150 150" {...props}>
+      <image href="https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png" width="150" height="150" />
+    </svg>
 );
 
+const KingRandom: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 150 150" {...props}>
+        <defs>
+            <clipPath id="clip-left-half-king-img">
+                <rect x="0" y="0" width="75" height="150" />
+            </clipPath>
+        </defs>
+        <image href="https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png" width="150" height="150" />
+        <image href="https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wk.png" width="150" height="150" clipPath="url(#clip-left-half-king-img)" />
+    </svg>
+);
+
+const AnalysisIcon: React.FC<{ bgColor: string; children: React.ReactNode } & React.SVGProps<SVGSVGElement>> = ({ bgColor, children, ...props }) => (
+    <svg viewBox="0 0 24 24" {...props}>
+        <circle cx="12" cy="12" r="11" fill={bgColor} />
+        {children}
+    </svg>
+);
 
 export const Icons = {
   ArrowLeft,
@@ -117,6 +154,7 @@ export const Icons = {
   Settings,
   Hint,
   Undo,
+  Resign,
   Player,
   Crown,
   TwoPlayers,
@@ -124,10 +162,60 @@ export const Icons = {
   Github,
   Mail,
   Instagram,
-  PiecePawn,
-  PieceKing,
-  PieceQueen,
-  PieceRook,
-  PieceBishop,
-  PieceKnight,
+  Pawn,
+  Knight,
+  Rook,
+  Queen,
+  Analyse,
+  KingWhite,
+  KingBlack,
+  KingRandom,
+  Analysis: {
+    Brilliant: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#38bdf8" {...props}>
+            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">!</text>
+        </AnalysisIcon>
+    ),
+    Best: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#84cc16" {...props}>
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="white"/>
+        </AnalysisIcon>
+    ),
+    Excellent: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#22c55e" {...props}>
+             <path d="M9 20v-8h3.33L12 7l-.33 5H9zM7 11H4v9h3z" transform="scale(0.8) translate(3, 1)" fill="white"/>
+             <path d="M7.83 5.95L4.24 9.54 3 8.31l3.59-3.59L8.41 3l3.59 3.59L15.59 3l1.83 1.83L13.83 8.41l3.59 3.59-1.23 1.23-3.59-3.59L9.01 13.2l-1.23-1.23 3.59-3.59-3.54-3.43z" fill="white" opacity="0"/>
+        </AnalysisIcon>
+    ),
+    Good: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#a3e635" {...props}>
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="white"/>
+        </AnalysisIcon>
+    ),
+    Book: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#ca8a04" {...props}>
+            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" fill="white"/>
+        </AnalysisIcon>
+    ),
+    Inaccuracy: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#facc15" {...props}>
+            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">?!</text>
+        </AnalysisIcon>
+    ),
+    Mistake: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#f97316" {...props}>
+            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">?</text>
+        </AnalysisIcon>
+    ),
+    Miss: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#ef4444" {...props}>
+            <path stroke="white" strokeWidth="2.5" d="M 6,6 L 18,18 M 18,6 L 6,18" />
+        </AnalysisIcon>
+    ),
+    Blunder: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#dc2626" {...props}>
+            <text x="12" y="18" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">??</text>
+        </AnalysisIcon>
+    ),
+  }
 };
