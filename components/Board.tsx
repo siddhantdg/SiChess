@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Chess, Square, Piece, Move } from 'chess.js';
 import { PieceComponent } from './Piece';
@@ -14,9 +13,11 @@ interface BoardProps {
   hintMove: { from: Square; to: Square } | null;
   isInteractionDisabled?: boolean;
   analysisMode: boolean;
+  analysisBestMoveForPosition?: { from: Square; to: Square } | null;
   currentMoveIndex: number;
   historyLength: number;
   onRequestNavigation: (index: number) => void;
+  playerColor: 'w' | 'b';
 }
 
 type AnimationState = {
@@ -40,9 +41,11 @@ export const Board: React.FC<BoardProps> = ({
     hintMove, 
     isInteractionDisabled,
     analysisMode,
+    analysisBestMoveForPosition,
     currentMoveIndex,
     historyLength,
     onRequestNavigation,
+    playerColor,
 }) => {
   const [draggedPiece, setDraggedPiece] = useState<{ piece: Piece; from: Square } | null>(null);
   const [legalMoves, setLegalMoves] = useState<Move[]>([]);
@@ -205,13 +208,71 @@ export const Board: React.FC<BoardProps> = ({
       </div>
     );
   };
+  
+  const renderAnalysisArrow = () => {
+    if (!analysisMode || !analysisBestMoveForPosition || !boardRef.current) return null;
+
+    const { from, to } = analysisBestMoveForPosition;
+    
+    const fromEl = boardRef.current.querySelector(`[data-square="${from}"]`);
+    const toEl = boardRef.current.querySelector(`[data-square="${to}"]`);
+    
+    if (!fromEl || !toEl) return null;
+
+    const boardRect = boardRef.current.getBoundingClientRect();
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+
+    const startX = fromRect.left - boardRect.left + fromRect.width / 2;
+    const startY = fromRect.top - boardRect.top + fromRect.height / 2;
+    const endX = toRect.left - boardRect.left + toRect.width / 2;
+    const endY = toRect.top - boardRect.top + toRect.height / 2;
+
+    const angle = Math.atan2(endY - startY, endX - startX);
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+    const style: React.CSSProperties = {
+      position: 'absolute',
+      top: `${startY}px`,
+      left: `${startX}px`,
+      width: `${length}px`,
+      transformOrigin: '0 50%',
+      transform: `rotate(${angle}rad)`,
+      zIndex: 5,
+      pointerEvents: 'none',
+    };
+    
+    const arrowHeadSize = fromRect.width * 0.4;
+    
+    return (
+      <div style={style}>
+        <svg width={length} height={fromRect.height} viewBox={`0 0 ${length} ${fromRect.height}`} className="overflow-visible">
+          <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+              <polygon points="0 0, 6 2, 0 4" fill="rgba(22, 163, 74, 0.8)" />
+            </marker>
+          </defs>
+          <line
+            x1="0"
+            y1={fromRect.height / 2}
+            x2={length - (arrowHeadSize / 2)}
+            y2={fromRect.height / 2}
+            stroke="rgba(22, 163, 74, 0.8)"
+            strokeWidth={fromRect.width * 0.15}
+            markerEnd="url(#arrowhead)"
+          />
+        </svg>
+      </div>
+    );
+  };
 
   const renderBoard = () => {
     const squares = [];
-    const ranksToRender = [...ranks].reverse();
+    const ranksToRender = playerColor === 'w' ? [...ranks].reverse() : ranks;
+    const filesToRender = playerColor === 'w' ? files : [...files].reverse();
 
     for (const rank of ranksToRender) {
-      for (const file of files) {
+      for (const file of filesToRender) {
         const square = `${file}${rank}` as Square;
         const piece = gameInstance.get(square);
         const isLight = (files.indexOf(file) + parseInt(rank)) % 2 !== 0;
@@ -234,14 +295,14 @@ export const Board: React.FC<BoardProps> = ({
             onDrop={() => handleDrop(square)}
             onClick={() => handleSquareClick(square)}
           >
-            {isLastMoveSquare && <div className="absolute inset-0 bg-yellow-400/40" />}
+            {isLastMoveSquare && !analysisMode && <div className="absolute inset-0 bg-yellow-400/40" />}
             {isKingInCheck && <div className="absolute inset-0 bg-red-900/40" />}
             {(isHintFrom || isHintTo) && <div className="absolute inset-0 bg-green-500/50 animate-pulse" />}
             <span className={`absolute text-xs font-bold top-0 left-1 ${isLight ? 'text-[#769656]' : 'text-[#eeeed2]'} select-none`}>
-              {file === 'a' ? rank : ''}
+              {file === (playerColor === 'w' ? 'a' : 'h') ? rank : ''}
             </span>
             <span className={`absolute text-xs font-bold bottom-0 right-1 ${isLight ? 'text-[#769656]' : 'text-[#eeeed2]'} select-none`}>
-              {rank === '1' ? file : ''}
+              {rank === (playerColor === 'w' ? '1' : '8') ? file : ''}
             </span>
             {isLegalMoveSquare && !isCaptureSquare && (
               <div className="absolute w-1/3 h-1/3 rounded-full z-20 bg-black/20"></div>
@@ -266,9 +327,10 @@ export const Board: React.FC<BoardProps> = ({
   };
 
   return (
-    <div className="bg-[#18181a] p-2 shadow-lg">
-      <div ref={boardRef} className="relative w-full aspect-square">
-        <div className="grid grid-cols-8 grid-rows-8 w-full aspect-square">
+    <div className="shadow-lg max-w-full max-h-full aspect-square">
+      <div ref={boardRef} className="relative w-full h-full">
+        {renderAnalysisArrow()}
+        <div className="grid grid-cols-8 grid-rows-8 w-full h-full">
           {renderBoard()}
         </div>
         {renderAnimatingPiece()}
