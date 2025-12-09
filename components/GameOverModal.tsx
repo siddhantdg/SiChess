@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Icons } from './Icons';
 
@@ -10,20 +11,32 @@ interface GameOverModalProps {
   onClose: () => void;
   player1Name: string;
   player2Name: string;
+  playerColor?: 'w' | 'b';
+  gameMode?: 'pvc' | 'pvp';
 }
 
-export const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, winner, reason, onRetry, onAnalyse, onClose, player1Name, player2Name }) => {
+export const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, winner, reason, onRetry, onAnalyse, onClose, player1Name, player2Name, playerColor, gameMode }) => {
   if (!isOpen) return null;
 
+  let whitePlayerName = player1Name;
+  let blackPlayerName = player2Name;
+
+  // In PVC, if the human player chose black, their name (player1Name) should be associated with black.
+  if (gameMode === 'pvc' && playerColor === 'b') {
+    whitePlayerName = player2Name; // Computer is white
+    blackPlayerName = player1Name; // Player is black
+  }
+
   const winnerText = 
-    winner === 'w' ? `${player1Name} Wins!` : 
-    winner === 'b' ? `${player2Name} Wins!` : 
+    winner === 'w' ? `${whitePlayerName} Wins!` : 
+    winner === 'b' ? `${blackPlayerName} Wins!` : 
     'Draw!';
     
   const reasonText = 
     reason === 'checkmate' ? 'By Checkmate' : 
     reason === 'stalemate' ? 'By Stalemate' : 
     reason === 'timeout' ? 'On Time' :
+    reason === 'resignation' ? 'By Resignation' :
     'By Agreement/Repetition';
 
   return (
