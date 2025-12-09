@@ -12,7 +12,7 @@ export const EvaluationBar: React.FC<EvaluationBarProps> = ({ evaluation, isLoad
   const whiteAdvantagePercent = 50 + clampedEval * 5;
 
   return (
-    <div className="w-full bg-[#2a2a2c] h-3 rounded-md flex items-center relative overflow-hidden">
+    <div className="w-full bg-zinc-800 h-3 rounded-md flex items-center relative overflow-hidden">
       <div
         className="h-full bg-white transition-all duration-500 ease-out"
         style={{ width: `${whiteAdvantagePercent}%` }}
