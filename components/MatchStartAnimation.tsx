@@ -1,14 +1,32 @@
+
 import React, { useState, useEffect } from 'react';
 import { Icons } from './Icons';
+import { Difficulty } from '../types';
 
 interface MatchStartAnimationProps {
   onAnimationEnd: () => void;
   player1Name: string;
   player2Name: string;
   gameMode: 'pvc' | 'pvp';
+  difficulty: Difficulty;
 }
 
-export const MatchStartAnimation: React.FC<MatchStartAnimationProps> = ({ onAnimationEnd, player1Name, player2Name, gameMode }) => {
+const difficultyIconUrls: Record<Difficulty, string> = {
+  beginner: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png',
+  intermediate: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png',
+  advanced: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png',
+  master: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png',
+};
+
+const DifficultyIcon: React.FC<{ difficulty: Difficulty; className: string }> = ({ difficulty, className }) => {
+  const iconUrl = difficultyIconUrls[difficulty];
+  if (iconUrl) {
+    return <img src={iconUrl} alt={`${difficulty} difficulty`} className={className} />;
+  }
+  return <Icons.Computer className={className} />;
+};
+
+export const MatchStartAnimation: React.FC<MatchStartAnimationProps> = ({ onAnimationEnd, player1Name, player2Name, gameMode, difficulty }) => {
   const [animationStep, setAnimationStep] = useState<'initial' | 'entering' | 'exiting'>('initial');
 
   useEffect(() => {
@@ -57,7 +75,7 @@ export const MatchStartAnimation: React.FC<MatchStartAnimationProps> = ({ onAnim
          <h2 className="font-bold text-4xl text-zinc-200">{player2Name}</h2>
          <div className="bg-[#2a2a2c] p-3 rounded-xl">
           {gameMode === 'pvc' ? (
-            <Icons.Computer className="w-16 h-16 text-zinc-200" />
+            <DifficultyIcon difficulty={difficulty} className="w-16 h-16" />
           ) : (
             <Icons.Player className="w-16 h-16 text-zinc-200" />
           )}
