@@ -24,9 +24,9 @@ export const CustomTimeModal: React.FC<CustomTimeModalProps> = ({ isOpen, onClos
   const handleSet = () => {
     const p1 = parseInt(p1Time, 10);
     const p2 = parseInt(p2Time, 10);
-    // Basic validation: ensure positive numbers, default to 1 if invalid
-    const validP1 = !isNaN(p1) && p1 > 0 ? p1 : 1;
-    const validP2 = !isNaN(p2) && p2 > 0 ? p2 : 1;
+    // Validation: ensure positive numbers, default to 1 if invalid, and cap at 99
+    const validP1 = !isNaN(p1) && p1 > 0 ? Math.min(p1, 99) : 1;
+    const validP2 = !isNaN(p2) && p2 > 0 ? Math.min(p2, 99) : 1;
     onSetTime(validP1, validP2);
   };
 
@@ -53,6 +53,7 @@ export const CustomTimeModal: React.FC<CustomTimeModalProps> = ({ isOpen, onClos
               value={p1Time}
               onChange={(e) => setP1Time(e.target.value)}
               min="1"
+              max="99"
               className="w-full bg-[#2a2a2c] text-zinc-200 border border-zinc-600 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
           </div>
@@ -66,6 +67,7 @@ export const CustomTimeModal: React.FC<CustomTimeModalProps> = ({ isOpen, onClos
               value={p2Time}
               onChange={(e) => setP2Time(e.target.value)}
               min="1"
+              max="99"
               className="w-full bg-[#2a2a2c] text-zinc-200 border border-zinc-600 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
           </div>
