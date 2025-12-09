@@ -1,11 +1,12 @@
+
 import { useState, useCallback, useEffect } from 'react';
 import { Chess, Square, Move, Piece } from 'chess.js';
-import { GameOverData } from '../types';
-import { findBestMove, getEvaluation } from '../services/chessEngine';
+import { GameOverData, Difficulty } from '../types';
+import { findComputerMove, getEvaluation } from '../services/chessEngine';
 
 const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
+export const useChessGame = (gameMode: 'pvc' | 'pvp', computerColor: 'w' | 'b' | null, difficulty: Difficulty) => {
   const [game, setGame] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [history, setHistory] = useState<Move[]>([]);
@@ -50,7 +51,7 @@ export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
         for (const type of ['q', 'r', 'b', 'n', 'p'] as const) {
             const capturedCount = initialCounts[type] - currentCounts[color][type];
             for (let i = 0; i < capturedCount; i++) {
-                captured[color].push({ color, type }); 
+                captured[color].push({ color, type });
             }
         }
     }
@@ -119,11 +120,9 @@ export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
   // Handle computer's move
   useEffect(() => {
     const gameInstance = new Chess(fen);
-    // This is the crucial fix: The computer should only make a move if the game
-    // is currently at the most recent state (i.e., not when the user is browsing history).
-    if (gameMode === 'pvc' && gameInstance.turn() === 'b' && !gameInstance.isGameOver() && currentMoveIndex === history.length) {
+    if (gameMode === 'pvc' && computerColor && gameInstance.turn() === computerColor && !gameInstance.isGameOver() && currentMoveIndex === history.length) {
       setIsComputerThinking(true);
-      findBestMove(gameInstance).then(move => {
+      findComputerMove(gameInstance, difficulty).then(move => {
         if (move) {
           setTimeout(() => {
             makeMoveInternal(move);
@@ -134,7 +133,7 @@ export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
         }
       });
     }
-  }, [fen, gameMode, makeMoveInternal, currentMoveIndex, history.length]);
+  }, [fen, gameMode, computerColor, makeMoveInternal, currentMoveIndex, history.length, difficulty]);
   
   const resetGame = useCallback(() => {
     setFen(INITIAL_FEN);
@@ -150,12 +149,12 @@ export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
       const targetIndex = Math.max(0, Math.min(history.length, index));
 
       for(let i = 0; i < targetIndex; i++){
-          newGame.move(history[i].san);
+          newGame.move(history[i]);
       }
       
       setFen(newGame.fen());
       setCurrentMoveIndex(targetIndex);
-      const lastMoveInHistory = history[targetIndex - 1];
+      const lastMoveInHistory = targetIndex > 0 ? history[targetIndex - 1] : null;
       setLastMove(lastMoveInHistory ? { from: lastMoveInHistory.from, to: lastMoveInHistory.to } : null);
       
       calculateCapturedAndAdvantage(newGame.fen());
@@ -166,36 +165,25 @@ export const useChessGame = (gameMode: 'pvc' | 'pvp') => {
     if (currentMoveIndex > 0) {
       let movesToUndo = 1;
       
-      // In Player vs Computer mode, if it's the player's (white's) turn, the computer just moved.
+      // In Player vs Computer mode, if it's the player's turn, the computer just moved.
       // To undo the player's last move, we must also undo the computer's response.
-      // This is a common, user-friendly behavior in chess UIs.
-      if (gameMode === 'pvc' && currentMoveIndex === history.length && game.turn() === 'w') {
+      if (gameMode === 'pvc' && computerColor && currentMoveIndex === history.length && game.turn() !== computerColor) {
         movesToUndo = 2;
       }
   
       const targetIndex = Math.max(0, currentMoveIndex - movesToUndo);
-      const newHistory = history.slice(0, targetIndex);
-  
-      // Rebuild the game state from the new, truncated history to ensure consistency.
-      const newGame = new Chess();
-      newHistory.forEach(move => newGame.move(move.san));
-  
-      setHistory(newHistory);
-      setFen(newGame.fen());
-      setCurrentMoveIndex(targetIndex);
-      const lastMoveInNewHistory = newHistory[targetIndex - 1];
-      setLastMove(lastMoveInNewHistory ? { from: lastMoveInNewHistory.from, to: lastMoveInNewHistory.to } : null);
-      calculateCapturedAndAdvantage(newGame.fen());
+      navigateToMove(targetIndex);
+      setHistory(prev => prev.slice(0, targetIndex));
       setGameOverData(null); // After undoing, the game is no longer over.
     }
-  }, [currentMoveIndex, history, gameMode, game, calculateCapturedAndAdvantage]);
+  }, [currentMoveIndex, history, gameMode, game, computerColor, navigateToMove]);
 
   const getLegalMoves = useCallback((square: Square) => {
     return new Chess(fen).moves({ square, verbose: true });
   }, [fen]);
 
   const requestHint = useCallback(async () => {
-    const bestMove = await findBestMove(new Chess(fen));
+    const bestMove = await findComputerMove(new Chess(fen), 'master'); // Hint uses master difficulty
     if(bestMove){
         setHintMove({ from: bestMove.from, to: bestMove.to });
         setTimeout(() => setHintMove(null), 2000); // clear hint after 2s
