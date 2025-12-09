@@ -12,7 +12,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
         <Icons.ArrowLeft className="w-6 h-6" />
       </button>
       <div className="flex items-center">
-        <span className="text-xl font-semibold text-zinc-200">Chess</span>
+        <span className="text-xl font-bold text-zinc-200 font-montserrat">Chess</span>
       </div>
       <div className="w-6 h-6" /> {/* Spacer */}
     </header>
