@@ -14,7 +14,7 @@ interface PlayerInfoProps {
 
 export const PlayerInfo: React.FC<PlayerInfoProps> = ({ capturedPieces, materialAdvantage, playerName, timeInSeconds, isTurn }) => {
   return (
-    <div className="flex items-center justify-between p-2">
+    <div className="flex items-center justify-between p-3">
       <div className="flex items-center space-x-3">
         <div className="bg-[#2a2a2c] p-1.5 rounded-lg">
           <Icons.Player className="w-9 h-9 text-zinc-400" />
@@ -27,7 +27,7 @@ export const PlayerInfo: React.FC<PlayerInfoProps> = ({ capturedPieces, material
             />
         </div>
       </div>
-      {timeInSeconds !== null && <Timer timeInSeconds={timeInSeconds} isActive={isTurn} />}
+      {timeInSeconds !== null && <div className="relative -top-1"><Timer timeInSeconds={timeInSeconds} isActive={isTurn} /></div>}
     </div>
   );
 };
