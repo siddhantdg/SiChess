@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Icons } from './Icons';
 
@@ -33,7 +32,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 <div className="bg-[#2a2a2c] rounded-2xl p-5 text-left font-roboto-mono w-full max-w-sm">
                     <div className="text-zinc-400 text-sm space-y-2 my-4">
                         <p><span className="font-semibold text-zinc-300">Developed by:</span> Siddhant</p>
-                        <p><span className="font-semibold text-zinc-300">Version:</span> 0.6.0</p>
+                        <p><span className="font-semibold text-zinc-300">Version:</span> 1.0.0</p>
                         <p>© 2025 Siddhant. All Rights Reserved.</p>
                     </div>
 
