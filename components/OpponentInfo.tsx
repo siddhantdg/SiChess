@@ -4,7 +4,7 @@ import { Icons } from './Icons';
 import { Piece } from 'chess.js';
 import { CapturedPiecesDisplay } from './CapturedPiecesDisplay';
 import { Timer } from './Timer';
-import { Difficulty } from '../types';
+import { Difficulty, PlayStyle } from '../types';
 
 interface OpponentInfoProps {
     capturedPieces: Piece[];
@@ -14,44 +14,54 @@ interface OpponentInfoProps {
     timeInSeconds: number | null;
     isTurn: boolean;
     difficulty: Difficulty;
+    analysisMode?: boolean;
+    playStyle?: PlayStyle;
 }
 
-const difficultyIconUrls: Record<Difficulty, string> = {
-  beginner: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png',
-  intermediate: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png',
-  advanced: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png',
-  master: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png',
-};
+export const OpponentInfo: React.FC<OpponentInfoProps> = ({ capturedPieces, materialAdvantage, playerName, isComputer, timeInSeconds, isTurn, difficulty, analysisMode, playStyle }) => {
+  const renderPlayerName = () => {
+    if (isComputer) {
+      const parts = playerName.split(' ');
+      const elo = parts.pop();
+      const label = parts.join(' ');
+      
+      if (elo && !isNaN(parseInt(elo))) {
+        return (
+          <h2 className="font-semibold text-lg text-zinc-200 flex items-center">
+            {label}
+            <span className="ml-2 text-sm font-normal text-zinc-400">{elo}</span>
+            {playStyle === 'aggressive' && (
+              <div className="ml-2 w-2 h-2 rounded-full bg-[#FF3D00] shadow-[0_0_8px_#FF3D00]" title="Aggressive" />
+            )}
+            {playStyle === 'defensive' && (
+              <div className="ml-2 w-2 h-2 rounded-full bg-[#40C4FF] shadow-[0_0_8px_#40C4FF]" title="Defensive" />
+            )}
+          </h2>
+        );
+      }
+    }
+    return <h2 className="font-semibold text-lg text-zinc-200">{playerName}</h2>;
+  };
 
-const DifficultyIcon: React.FC<{ difficulty: Difficulty; className: string }> = ({ difficulty, className }) => {
-  const iconUrl = difficultyIconUrls[difficulty];
-  if (iconUrl) {
-    return <img src={iconUrl} alt={`${difficulty} difficulty`} className={className} />;
-  }
-  return <Icons.Computer className={className} />;
-};
-
-
-export const OpponentInfo: React.FC<OpponentInfoProps> = ({ capturedPieces, materialAdvantage, playerName, isComputer, timeInSeconds, isTurn, difficulty }) => {
   return (
     <div className="flex items-center justify-between p-3">
         <div className="flex items-center space-x-3">
             <div className="bg-[#2a2a2c] p-1.5 rounded-lg">
                 {isComputer ? (
-                    <DifficultyIcon difficulty={difficulty} className="w-9 h-9" />
+                    <Icons.Computer className="w-9 h-9 text-zinc-400" />
                 ) : (
                     <Icons.Player className="w-9 h-9 text-zinc-400" />
                 )}
             </div>
             <div>
-                <h2 className="font-semibold text-lg text-zinc-200">{playerName}</h2>
+                {renderPlayerName()}
                  <CapturedPiecesDisplay
                     pieces={capturedPieces}
                     advantage={materialAdvantage < 0 ? Math.abs(materialAdvantage) : 0}
                 />
             </div>
         </div>
-       {timeInSeconds !== null && <div className="relative -bottom-1"><Timer timeInSeconds={timeInSeconds} isActive={isTurn} /></div>}
+       {!analysisMode && timeInSeconds !== null && <div className="relative -bottom-1"><Timer timeInSeconds={timeInSeconds} isActive={isTurn} /></div>}
     </div>
   );
 };
