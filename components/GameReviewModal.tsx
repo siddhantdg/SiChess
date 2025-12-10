@@ -1,23 +1,27 @@
 
 import React from 'react';
 import { Icons } from './Icons';
-import { GameAnalysis, MoveClassification, Difficulty } from '../types';
+import { GameAnalysis, MoveClassification, Difficulty, MoveAnalysis } from '../types';
+import { GameFlowChart } from './GameFlowChart';
 
 interface GameReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   onContinue: () => void;
   summary: GameAnalysis['summary'];
+  analysisDetails: (MoveAnalysis | null)[];
   playerNames: { player1: string, player2: string };
   winner?: 'w' | 'b' | 'draw';
-  gameMode: 'pvc' | 'pvp';
+  gameMode: 'pvc' | 'pvp' | 'cvc';
   difficulty: Difficulty;
+  playerColor: 'w' | 'b';
 }
 
-const classificationOrder: MoveClassification[] = ['brilliant', 'best', 'excellent', 'good', 'book', 'inaccuracy', 'mistake', 'miss', 'blunder'];
+const classificationOrder: MoveClassification[] = ['brilliant', 'great', 'best', 'excellent', 'good', 'book', 'inaccuracy', 'mistake', 'miss', 'blunder'];
 
 const classificationLabels: Record<MoveClassification, string> = {
-    brilliant: 'Great',
+    brilliant: 'Brilliant',
+    great: 'Great',
     best: 'Best',
     excellent: 'Excellent',
     good: 'Good',
@@ -29,19 +33,21 @@ const classificationLabels: Record<MoveClassification, string> = {
 };
 
 const classificationIcons: Record<MoveClassification, React.ReactNode> = {
-    brilliant: <Icons.Analysis.Brilliant className="w-7 h-7" />,
-    best: <Icons.Analysis.Best className="w-7 h-7" />,
-    excellent: <Icons.Analysis.Excellent className="w-7 h-7" />,
-    good: <Icons.Analysis.Good className="w-7 h-7" />,
-    book: <Icons.Analysis.Book className="w-7 h-7" />,
-    inaccuracy: <Icons.Analysis.Inaccuracy className="w-7 h-7" />,
-    mistake: <Icons.Analysis.Mistake className="w-7 h-7" />,
-    miss: <Icons.Analysis.Miss className="w-7 h-7" />,
-    blunder: <Icons.Analysis.Blunder className="w-7 h-7" />
+    brilliant: <Icons.Analysis.Brilliant className="w-6 h-6" />,
+    great: <Icons.Analysis.Great className="w-6 h-6" />,
+    best: <Icons.Analysis.Best className="w-6 h-6" />,
+    excellent: <Icons.Analysis.Excellent className="w-6 h-6" />,
+    good: <Icons.Analysis.Good className="w-6 h-6" />,
+    book: <Icons.Analysis.Book className="w-6 h-6" />,
+    inaccuracy: <Icons.Analysis.Inaccuracy className="w-6 h-6" />,
+    mistake: <Icons.Analysis.Mistake className="w-6 h-6" />,
+    miss: <Icons.Analysis.Miss className="w-6 h-6" />,
+    blunder: <Icons.Analysis.Blunder className="w-6 h-6" />
 };
 
 const moveCountColor: Record<MoveClassification, string> = {
-    brilliant: 'text-sky-400',
+    brilliant: 'text-cyan-400',
+    great: 'text-blue-500',
     best: 'text-lime-400',
     excellent: 'text-green-500',
     good: 'text-green-400',
@@ -52,103 +58,137 @@ const moveCountColor: Record<MoveClassification, string> = {
     blunder: 'text-red-600',
 };
 
-const difficultyIconUrls: Record<Difficulty, string> = {
-  beginner: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png',
-  intermediate: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png',
-  advanced: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png',
-  master: 'https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png',
-};
-
-const DifficultyIcon: React.FC<{ difficulty: Difficulty; className: string }> = ({ difficulty, className }) => {
-  const iconUrl = difficultyIconUrls[difficulty];
-  if (iconUrl) {
-    return <img src={iconUrl} alt={`${difficulty} difficulty`} className={className} />;
-  }
-  return <Icons.Computer className={className} />;
-};
-
-export const GameReviewModal: React.FC<GameReviewModalProps> = ({ isOpen, onClose, onContinue, summary, playerNames, winner, gameMode, difficulty }) => {
+export const GameReviewModal: React.FC<GameReviewModalProps> = ({ isOpen, onClose, onContinue, summary, analysisDetails, playerNames, winner, gameMode, difficulty, playerColor }) => {
     if (!isOpen) return null;
 
-    const whitePlayerName = playerNames.player1;
-    const blackPlayerName = playerNames.player2;
+    let whitePlayerName: string;
+    let blackPlayerName: string;
+    let whiteIsHuman: boolean;
+    let blackIsHuman: boolean;
+
+    if (gameMode === 'pvc') {
+        if (playerColor === 'w') {
+            whitePlayerName = playerNames.player1; // human
+            blackPlayerName = playerNames.player2; // computer
+            whiteIsHuman = true;
+            blackIsHuman = false;
+        } else { // player is black
+            whitePlayerName = playerNames.player2; // computer
+            blackPlayerName = playerNames.player1; // human
+            whiteIsHuman = false;
+            blackIsHuman = true;
+        }
+    } else { // pvp or cvc
+        whitePlayerName = playerNames.player1;
+        blackPlayerName = playerNames.player2;
+        whiteIsHuman = gameMode !== 'cvc';
+        blackIsHuman = gameMode !== 'cvc';
+    }
 
     const whiteSummary = summary.white;
     const blackSummary = summary.black;
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#18181a] text-white animate-scale-in">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[#18181a] text-zinc-200 animate-scale-in">
             {/* Header */}
-            <header className="flex items-center p-4 shrink-0 border-b border-zinc-700">
+            <header className="flex items-center p-4 shrink-0">
                 <button onClick={onClose} className="p-2 -ml-2 text-zinc-400 hover:text-white transition-colors">
-                    <Icons.ArrowLeft className="w-6 h-6" />
+                    <Icons.ArrowLeft className="w-5 h-5" />
                 </button>
-                <h1 className="text-xl font-bold mx-auto">Game Review</h1>
-                <div className="w-10"></div> {/* Spacer */}
+                <h1 className="text-lg font-bold mx-auto">Game Review</h1>
+                <div className="w-9"></div> {/* Spacer */}
             </header>
 
             {/* Main Content */}
             <main className="flex-grow p-4 overflow-y-auto">
                 <div className="max-w-md mx-auto">
-                    {/* Player & Accuracy Section */}
-                    <div className="space-y-4 mb-8">
-                        <div className="grid grid-cols-[1fr_2fr_2fr] gap-4 items-center">
-                            <div className="text-zinc-400 font-semibold text-lg">Players</div>
-                            <div className="flex flex-col items-center space-y-2">
-                                <div className={`p-1 rounded-lg border-2 ${winner === 'w' ? 'border-green-500' : 'border-transparent'}`}>
-                                    <div className="bg-[#3a3a3c] p-1.5 rounded-md">
-                                        <Icons.Player className="w-10 h-10" />
-                                    </div>
-                                </div>
-                                <span className="font-semibold truncate max-w-[100px]">{whitePlayerName}</span>
-                            </div>
-                            <div className="flex flex-col items-center space-y-2">
-                                <div className={`p-1 rounded-lg border-2 ${winner === 'b' ? 'border-green-500' : 'border-transparent'}`}>
-                                    <div className="bg-[#3a3a3c] p-1.5 rounded-md">
-                                        {gameMode === 'pvc' ? <DifficultyIcon difficulty={difficulty} className="w-10 h-10" /> : <Icons.Player className="w-10 h-10" />}
-                                    </div>
-                                </div>
-                                <span className="font-semibold truncate max-w-[100px]">{blackPlayerName}</span>
-                            </div>
-                        </div>
+                    <div className="bg-[#202022] p-4 rounded-2xl border border-[#2d2d2f]">
+                        <div className="grid grid-cols-[auto_1fr_1fr] gap-x-4 items-center" style={{ rowGap: '0.75rem' }}>
+                            <div className="col-start-2 text-center font-bold text-white text-xl">{whitePlayerName}</div>
+                            <div className="col-start-3 text-center font-bold text-white text-xl">{blackPlayerName}</div>
 
-                        <div className="grid grid-cols-[1fr_2fr_2fr] gap-4 items-center">
-                            <div className="text-zinc-400 font-semibold text-lg">Accuracy</div>
-                             <div className={`text-center font-bold text-3xl py-2 rounded-lg transition-colors ${winner === 'w' ? 'bg-white text-black' : 'bg-[#3a3a3c]'}`}>
-                                {whiteSummary.accuracy}
+                            <div className="text-zinc-400 font-semibold text-lg">Players</div>
+                            <div className="flex justify-center">
+                                <div
+                                    className={`w-14 h-14 rounded-xl p-1 transition-all duration-300`}
+                                    style={winner === 'w' ? { backgroundImage: 'linear-gradient(to bottom right, #AEEA00, #8BC34A)' } : {}}
+                                >
+                                    <div className="bg-[#2a2a2c] w-full h-full rounded-lg flex items-center justify-center">
+                                        {whiteIsHuman 
+                                            ? <Icons.Player className="w-10 h-10 text-zinc-400" />
+                                            : <Icons.Computer className="w-10 h-10 text-zinc-400" />
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                            <div className={`text-center font-bold text-3xl py-2 rounded-lg transition-colors ${winner === 'b' ? 'bg-white text-black' : 'bg-[#3a3a3c]'}`}>
-                                {blackSummary.accuracy}
+                            <div className="flex justify-center">
+                                <div
+                                    className={`w-14 h-14 rounded-xl p-1 transition-all duration-300`}
+                                    style={winner === 'b' ? { backgroundImage: 'linear-gradient(to bottom right, #AEEA00, #8BC34A)' } : {}}
+                                >
+                                    <div className="bg-[#2a2a2c] w-full h-full rounded-lg flex items-center justify-center">
+                                        {blackIsHuman
+                                            ? <Icons.Player className="w-10 h-10 text-zinc-400" />
+                                            : <Icons.Computer className="w-10 h-10 text-zinc-400" />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="text-zinc-400 font-semibold text-lg">Accuracy</div>
+                            <div className="flex justify-center">
+                                <div className={`w-20 text-center font-bold text-xl py-1.5 rounded-lg ${winner === 'w' ? 'bg-zinc-200 text-zinc-900' : 'bg-[#2a2a2c] text-zinc-200'}`}>
+                                    {whiteSummary.accuracy}
+                                </div>
+                            </div>
+                            <div className="flex justify-center">
+                                <div className={`w-20 text-center font-bold text-xl py-1.5 rounded-lg ${winner === 'b' ? 'bg-zinc-200 text-zinc-900' : 'bg-[#2a2a2c] text-zinc-200'}`}>
+                                    {blackSummary.accuracy}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <hr className="border-zinc-700/50 my-8" />
+                    {/* Performance Report Title/Separator */}
+                    <div className="flex items-center text-center my-8">
+                        <div className="flex-grow border-t border-zinc-700/80"></div>
+                        <span className="flex-shrink mx-4 text-sm font-bold tracking-wider text-zinc-500 uppercase">Performance Report</span>
+                        <div className="flex-grow border-t border-zinc-700/80"></div>
+                    </div>
 
-                    {/* Move Breakdown Section */}
-                    <div className="space-y-3">
+                    {/* Move Breakdown Rows */}
+                    <div className="grid grid-cols-[auto_1fr_auto_1fr] gap-x-3 items-center" style={{ rowGap: '0.75rem' }}>
                         {classificationOrder.map((key) => (
-                            <div key={key} className="grid grid-cols-[2fr_1fr_auto_1fr] gap-x-4 items-center">
+                            <React.Fragment key={key}>
                                 <div className="text-zinc-300 font-medium text-lg">{classificationLabels[key]}</div>
-                                <div className={`text-right font-semibold text-xl ${moveCountColor[key]}`}>
+                                <div className={`text-center font-bold text-xl ${moveCountColor[key]}`}>
                                     {whiteSummary.moveCounts[key]}
                                 </div>
                                 <div className="flex justify-center">{classificationIcons[key]}</div>
-                                <div className={`text-left font-semibold text-xl ${moveCountColor[key]}`}>
+                                <div className={`text-center font-bold text-xl ${moveCountColor[key]}`}>
                                     {blackSummary.moveCounts[key]}
                                 </div>
-                            </div>
+                            </React.Fragment>
                         ))}
                     </div>
+
+                    {/* Game Flow Title/Separator */}
+                    <div className="flex items-center text-center my-8">
+                        <div className="flex-grow border-t border-zinc-700/80"></div>
+                        <span className="flex-shrink mx-4 text-sm font-bold tracking-wider text-zinc-500 uppercase">Game Flow</span>
+                        <div className="flex-grow border-t border-zinc-700/80"></div>
+                    </div>
+
+                    <GameFlowChart analysisDetails={analysisDetails} />
                 </div>
             </main>
 
             {/* Footer Button */}
-            <footer className="p-4 shrink-0 border-t border-zinc-700">
+            <footer className="p-4 shrink-0">
                 <div className="max-w-md mx-auto">
                     <button 
                         onClick={onContinue}
-                        className="w-full bg-sky-600 text-white font-bold text-lg py-3 rounded-xl hover:bg-sky-500 active:bg-sky-700 transition-colors duration-200"
+                        className="w-full bg-sky-600 text-white font-bold text-base py-2.5 rounded-xl hover:bg-sky-500 active:bg-sky-700 transition-colors duration-200"
                     >
                         Continue Review
                     </button>
