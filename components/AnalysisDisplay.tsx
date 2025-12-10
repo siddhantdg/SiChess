@@ -13,7 +13,8 @@ interface AnalysisDisplayProps {
 }
 
 const classificationText: Record<MoveClassification, string> = {
-    brilliant: 'Great',
+    brilliant: 'Brilliant',
+    great: 'Great',
     best: 'Best Move',
     excellent: 'Excellent',
     good: 'Good',
@@ -26,6 +27,7 @@ const classificationText: Record<MoveClassification, string> = {
 
 const classificationIcon: Record<MoveClassification, React.ReactNode> = {
     brilliant: <Icons.Analysis.Brilliant className="w-5 h-5" />,
+    great: <Icons.Analysis.Great className="w-5 h-5" />,
     best: <Icons.Analysis.Best className="w-5 h-5" />,
     excellent: <Icons.Analysis.Excellent className="w-5 h-5" />,
     good: <Icons.Analysis.Good className="w-5 h-5" />,
@@ -37,7 +39,8 @@ const classificationIcon: Record<MoveClassification, React.ReactNode> = {
 };
 
 const classificationColor: Record<MoveClassification, string> = {
-    brilliant: 'text-sky-400',
+    brilliant: 'text-cyan-400',
+    great: 'text-blue-500',
     best: 'text-lime-400',
     excellent: 'text-green-500',
     good: 'text-green-400',
@@ -49,27 +52,27 @@ const classificationColor: Record<MoveClassification, string> = {
 };
 
 export const AnalysisDisplay: React.FC<AnalysisDisplayProps> = ({ move, moveIndex, analysisMode, bestMoveSan, currentMoveAnalysis }) => {
-    if (!analysisMode && (!move || moveIndex === 0)) {
+    if (!analysisMode && !bestMoveSan && (!move || moveIndex === 0)) {
         return <div className="h-10"></div>;
     }
 
     const moveNumber = move ? Math.floor((moveIndex + 1) / 2) : 0;
     const turn = move?.color === 'w' ? '' : '...';
     
-    // In analysis mode, `moveIndex` corresponds to the state BEFORE the move. The actual move is `history[moveIndex - 1]`.
     const actualMove = move;
     const san = actualMove ? `${moveNumber}${turn} ${actualMove.san}` : 'Start';
     
     const analysis = analysisMode ? currentMoveAnalysis : null;
+    const showFeedback = analysisMode || bestMoveSan;
 
     return (
         <div className="flex justify-between items-center text-sm p-2 h-10">
             <div className="flex items-center space-x-2">
-                <span className="font-semibold text-zinc-200">{san}</span>
+                {actualMove && <span className="font-semibold text-zinc-200">{san}</span>}
             </div>
-            {analysisMode && (
+            {showFeedback && (
                 <div className="flex items-center space-x-2">
-                    {analysis && (
+                    {analysisMode && analysis && (
                          <div className={`flex items-center space-x-1 font-semibold ${classificationColor[analysis.classification]}`}>
                             {classificationIcon[analysis.classification]}
                             <span>{classificationText[analysis.classification]}</span>
