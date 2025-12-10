@@ -1,23 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chess</title>
+    <title>SiChess</title>
+    <link rel="preload" href="/stockfish.js" as="script">
+    <link rel="preload" href="/stockfish.wasm" as="fetch" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@800;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
   <script type="importmap">
 {
   "imports": {
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "chess.js": "https://aistudiocdn.com/chess.js@^1.4.0"
+    "chess.js": "https://aistudiocdn.com/chess.js@^1.4.0",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "vite": "https://aistudiocdn.com/vite@^7.2.2",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
   }
 }
 </script>
@@ -51,6 +54,110 @@
   }
   .animate-scale-in {
     animation: scale-in 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+  /* Custom styles for range input */
+  .difficulty-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    background: transparent; /* The background is set via inline style for progress */
+    outline: none;
+    border-radius: 5px;
+    transition: opacity .2s;
+  }
+
+  .difficulty-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .difficulty-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .collapsible {
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+  .collapsible.open {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 1rem;
+  }
+  
+  /* SiChess Intro Animation */
+  .animate-sichess-intro .si-part {
+    animation: si-reveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .animate-sichess-intro .chess-part {
+      animation: chess-settle 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes si-reveal {
+    /* 0-300ms: Hidden, no width */
+    0%, 20% {
+        max-width: 0;
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    /* 300-500ms: Grow to make space, stay invisible */
+    42% {
+        max-width: 5rem;
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    /* 500-960ms: Fade in, slide with overshoot */
+    80% {
+        max-width: 6rem;
+        opacity: 1;
+        transform: translateX(-2px);
+    }
+    /* 960ms-1200ms: Settle */
+    100% {
+        max-width: 10rem;
+        opacity: 1;
+        transform: translateX(0);
+    }
+  }
+
+  @keyframes chess-settle {
+    0%, 80% {
+        transform: translateX(0);
+    }
+    90% {
+        transform: translateX(1px); /* Subtle spring effect */
+    }
+    100% {
+        transform: translateX(0);
+    }
+  }
+  
+  /* Hint Fade In/Out Animation */
+  @keyframes fade-in-out {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .animate-fade-in-out {
+    animation: fade-in-out 2.5s ease-in-out forwards;
   }
 </style>
 <link rel="stylesheet" href="/index.css">
