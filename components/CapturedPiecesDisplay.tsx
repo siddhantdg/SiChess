@@ -7,7 +7,6 @@ interface CapturedPiecesDisplayProps {
   advantage: number;
 }
 
-// Order for sorting groups: Queen, Rook, Bishop, Knight, Pawn
 const pieceOrder: { [key: string]: number } = { q: 1, r: 2, b: 3, n: 4, p: 5 };
 
 export const CapturedPiecesDisplay: React.FC<CapturedPiecesDisplayProps> = ({ pieces, advantage }) => {
