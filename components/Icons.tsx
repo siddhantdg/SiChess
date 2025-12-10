@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 
 const ArrowLeft: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -11,6 +12,12 @@ const Computer: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z" />
   </svg>
+);
+
+const StockfishIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12,2A2,2,0,0,0,10,4V6H8A2,2,0,0,0,6,8V16A2,2,0,0,0,8,18H9V20A2,2,0,0,0,11,22H13A2,2,0,0,0,15,20V18H16A2,2,0,0,0,18,16V8A2,2,0,0,0,16,6H14V4A2,2,0,0,0,12,2M8,8H16V16H8V8M9.5,9.5A1.5,1.5,0,0,1,11,11A1.5,1.5,0,0,1,9.5,12.5A1.5,1.5,0,0,1,8,11A1.5,1.5,0,0,1,9.5,9.5M14.5,9.5A1.5,1.5,0,0,1,16,11A1.5,1.5,0,0,1,14.5,12.5A1.5,1.5,0,0,1,13,11A1.5,1.5,0,0,1,14.5,9.5Z" />
+    </svg>
 );
 
 const ChevronLeft: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -40,7 +47,7 @@ const Hint: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const Undo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3" transform="scale(-1, 1) translate(-24, 0)" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6-6m-6 6l6 6" />
   </svg>
 );
 
@@ -108,11 +115,52 @@ const Queen: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M5 20h14v2H5v-2zm0-2h14v-1c0-2.21-1.79-4-4-4H9c-2.21 0-4 1.79-4 4v1zm7-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5.22 4.39l1.41 1.41C9.26 11.23 10.54 12 12 12s2.74-.77 3.81-2.2l1.41-1.41L18.64 5l-1.41-1.41L15.81 5l-1.04-1.04-1.41 1.41-1.36 1.36-1.36-1.36-1.41-1.41L8.15 5l-1.41-1.41L5.32 5l1.41 1.41L8.15 7.83l-1.36 1.36z"/></svg>
 );
 
-const Analyse: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+const Bishop: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M18.5 2c-1.63 0-3.06.8-3.97 2.03C13.61 2.8 12.18 2 10.55 2 7.18 2 4.5 4.68 4.5 8.05c0 2.83 1.93 5.2 4.58 6.01.12.56.3 1.09.52 1.59-.51.27-1.07.66-1.57 1.15l-1.03-1.02-1.41 1.41 1.03 1.02c-.52.53-1.21 1.25-1.56 2.05h13.9c-.35-.8-1.04-1.52-1.56-2.05l1.03-1.02-1.41-1.41-1.03 1.02c-.5-.49-1.06-.88-1.57-1.15.22-.5.4-1.03.52-1.59 2.65-.81 4.58-3.18 4.58-6.01C20.55 4.68 17.87 2 14.5 2zM12 11.25c-1.79 0-3.25-1.46-3.25-3.25S10.21 4.75 12 4.75s3.25 1.46 3.25 3.25-1.46 3.25-3.25 3.25z"/></svg>
+);
+
+const Analyze: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
 );
+
+const Spectate: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+
+const Play: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const Pause: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const Share: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="18" cy="5" r="3"></circle>
+    <circle cx="6" cy="12" r="3"></circle>
+    <circle cx="18" cy="19" r="3"></circle>
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+  </svg>
+);
+
+const X: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
 
 // Icons for color selection using actual piece images
 const KingWhite: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -149,6 +197,7 @@ const AnalysisIcon: React.FC<{ bgColor: string; children: React.ReactNode } & Re
 export const Icons = {
   ArrowLeft,
   Computer,
+  StockfishIcon,
   ChevronLeft,
   ChevronRight,
   Settings,
@@ -166,14 +215,25 @@ export const Icons = {
   Knight,
   Rook,
   Queen,
-  Analyse,
+  Bishop,
+  Analyze,
+  Spectate,
+  Play,
+  Pause,
+  Share,
+  X,
   KingWhite,
   KingBlack,
   KingRandom,
   Analysis: {
     Brilliant: (props: React.SVGProps<SVGSVGElement>) => (
-        <AnalysisIcon bgColor="#38bdf8" {...props}>
-            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">!</text>
+        <AnalysisIcon bgColor="#22d3ee" {...props}>
+            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="900" style={{ transform: 'translateY(1.5px)' }}>!!</text>
+        </AnalysisIcon>
+    ),
+    Great: (props: React.SVGProps<SVGSVGElement>) => (
+        <AnalysisIcon bgColor="#3b82f6" {...props}>
+             <text x="12" y="18" fontSize="16" fill="white" textAnchor="middle" fontWeight="900">!</text>
         </AnalysisIcon>
     ),
     Best: (props: React.SVGProps<SVGSVGElement>) => (
@@ -183,8 +243,11 @@ export const Icons = {
     ),
     Excellent: (props: React.SVGProps<SVGSVGElement>) => (
         <AnalysisIcon bgColor="#22c55e" {...props}>
-             <path d="M9 20v-8h3.33L12 7l-.33 5H9zM7 11H4v9h3z" transform="scale(0.8) translate(3, 1)" fill="white"/>
-             <path d="M7.83 5.95L4.24 9.54 3 8.31l3.59-3.59L8.41 3l3.59 3.59L15.59 3l1.83 1.83L13.83 8.41l3.59 3.59-1.23 1.23-3.59-3.59L9.01 13.2l-1.23-1.23 3.59-3.59-3.54-3.43z" fill="white" opacity="0"/>
+             <path 
+                d="M1 21h4V9H1v12zM23 10c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59A1.986 1.986 0 007 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01z" 
+                fill="white"
+                transform="scale(0.8) translate(3, 2)"
+            />
         </AnalysisIcon>
     ),
     Good: (props: React.SVGProps<SVGSVGElement>) => (
@@ -199,22 +262,22 @@ export const Icons = {
     ),
     Inaccuracy: (props: React.SVGProps<SVGSVGElement>) => (
         <AnalysisIcon bgColor="#facc15" {...props}>
-            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">?!</text>
+            <text x="12" y="18" fontSize="15" fill="white" textAnchor="middle" fontWeight="900">?!</text>
         </AnalysisIcon>
     ),
     Mistake: (props: React.SVGProps<SVGSVGElement>) => (
         <AnalysisIcon bgColor="#f97316" {...props}>
-            <text x="12" y="17" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">?</text>
+            <text x="12" y="18" fontSize="16" fill="white" textAnchor="middle" fontWeight="900">?</text>
         </AnalysisIcon>
     ),
     Miss: (props: React.SVGProps<SVGSVGElement>) => (
         <AnalysisIcon bgColor="#ef4444" {...props}>
-            <path stroke="white" strokeWidth="2.5" d="M 6,6 L 18,18 M 18,6 L 6,18" />
+            <path stroke="white" strokeWidth="3.5" d="M 6,6 L 18,18 M 18,6 L 6,18" />
         </AnalysisIcon>
     ),
     Blunder: (props: React.SVGProps<SVGSVGElement>) => (
         <AnalysisIcon bgColor="#dc2626" {...props}>
-            <text x="12" y="18" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">??</text>
+            <text x="12" y="18" fontSize="15" fill="white" textAnchor="middle" fontWeight="900">??</text>
         </AnalysisIcon>
     ),
   }
