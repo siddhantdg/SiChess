@@ -13,6 +13,7 @@ interface MoveHistoryProps {
 
 const classificationIconMap: Record<MoveClassification, React.ReactNode> = {
     brilliant: <Icons.Analysis.Brilliant className="w-4 h-4 inline-block ml-1" />,
+    great: <Icons.Analysis.Great className="w-4 h-4 inline-block ml-1" />,
     best: <Icons.Analysis.Best className="w-4 h-4 inline-block ml-1" />,
     excellent: <Icons.Analysis.Excellent className="w-4 h-4 inline-block ml-1" />,
     good: <Icons.Analysis.Good className="w-4 h-4 inline-block ml-1" />,
@@ -92,7 +93,6 @@ export const MoveHistory: React.FC<MoveHistoryProps> = ({ history, currentMoveIn
       </button>
 
       <div className="flex-grow flex items-center space-x-3 overflow-x-auto scrollbar-hide text-base px-2 font-medium lg:flex-col lg:items-stretch lg:space-x-0 lg:space-y-1 lg:overflow-y-auto lg:p-2">
-        {/* Header for LG screens */}
         <div className="hidden lg:flex sticky top-0 bg-[#18181a] z-10 items-center space-x-2 shrink-0 w-full px-2 pb-2 mb-1 border-b border-zinc-700">
             <span className="text-zinc-500 font-bold w-8 text-center">#</span>
             <div className="flex-grow grid grid-cols-2 gap-2">
@@ -101,7 +101,6 @@ export const MoveHistory: React.FC<MoveHistoryProps> = ({ history, currentMoveIn
             </div>
         </div>
         
-        {/* Moves Content */}
         <div className="shrink-0 lg:w-full">
           <button
               ref={currentMoveIndex === 0 ? currentMoveRef : null}
