@@ -24,7 +24,6 @@ export const CustomTimeModal: React.FC<CustomTimeModalProps> = ({ isOpen, onClos
   const handleSet = () => {
     const p1 = parseInt(p1Time, 10);
     const p2 = parseInt(p2Time, 10);
-    // Validation: ensure positive numbers, default to 1 if invalid, and cap at 99
     const validP1 = !isNaN(p1) && p1 > 0 ? Math.min(p1, 99) : 1;
     const validP2 = !isNaN(p2) && p2 > 0 ? Math.min(p2, 99) : 1;
     onSetTime(validP1, validP2);
