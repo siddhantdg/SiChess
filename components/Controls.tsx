@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Icons } from './Icons';
 import { ControlAction } from '../types';
@@ -5,8 +6,10 @@ import { ControlAction } from '../types';
 interface ControlsProps {
   onControlClick: (action: ControlAction) => void;
   isHintEnabled: boolean;
-  gameMode: 'pvc' | 'pvp';
+  gameMode: 'pvc' | 'pvp' | 'cvc';
   isPostGame: boolean;
+  enableTakebacks: boolean;
+  isSpectatorModePaused?: boolean;
 }
 
 const ControlButton: React.FC<{
@@ -27,7 +30,7 @@ const ControlButton: React.FC<{
   </button>
 );
 
-export const Controls: React.FC<ControlsProps> = ({ onControlClick, isHintEnabled, gameMode, isPostGame }) => {
+export const Controls: React.FC<ControlsProps> = ({ onControlClick, isHintEnabled, gameMode, isPostGame, enableTakebacks, isSpectatorModePaused }) => {
   return (
     <div className="bg-[#18181a] p-3 flex justify-around items-center z-20">
       <ControlButton
@@ -35,36 +38,43 @@ export const Controls: React.FC<ControlsProps> = ({ onControlClick, isHintEnable
         label="Settings"
         onClick={() => onControlClick('settings')}
       />
-      {gameMode === 'pvc' && (
-        isPostGame ? (
-          <ControlButton
-            icon={<Icons.Analyse className="w-7 h-7" />}
-            label="Analyse"
-            onClick={() => onControlClick('analyse')}
-          />
-        ) : (
-          <ControlButton
-            icon={<Icons.Resign className="w-7 h-7" />}
-            label="Resign"
-            onClick={() => onControlClick('resign')}
-          />
-        )
+      
+      {/* In-game controls */}
+      {!isPostGame && (
+        <>
+          {gameMode === 'pvc' && (
+            <ControlButton
+              icon={<Icons.Resign className="w-7 h-7" />}
+              label="Resign"
+              onClick={() => onControlClick('resign')}
+            />
+          )}
+
+          {gameMode === 'cvc' && (
+            <ControlButton
+              icon={isSpectatorModePaused ? <Icons.Play className="w-7 h-7" /> : <Icons.Pause className="w-7 h-7" />}
+              label={isSpectatorModePaused ? 'Play' : 'Pause'}
+              onClick={() => onControlClick('togglePause')}
+            />
+          )}
+          
+          {gameMode === 'pvc' && (
+             <ControlButton
+              icon={<Icons.Hint className="w-7 h-7" />}
+              label="Hint"
+              onClick={() => onControlClick('hint')}
+              disabled={!isHintEnabled}
+            />
+          )}
+        </>
       )}
 
-      {/* In PvP mode post-game, show Analyse instead of Hint */}
-      {gameMode === 'pvp' && isPostGame ? (
+      {/* Post-game control */}
+      {isPostGame && (
         <ControlButton
-          icon={<Icons.Analyse className="w-7 h-7" />}
-          label="Analyse"
-          onClick={() => onControlClick('analyse')}
-        />
-      ) : (
-        // Otherwise (in-game PvP or any state of PvC), show the Hint button
-        <ControlButton
-          icon={<Icons.Hint className="w-7 h-7" />}
-          label="Hint"
-          onClick={() => onControlClick('hint')}
-          disabled={!isHintEnabled || isPostGame}
+          icon={<Icons.Analyze className="w-7 h-7" />}
+          label="Analyze"
+          onClick={() => onControlClick('analyze')}
         />
       )}
       
@@ -72,7 +82,7 @@ export const Controls: React.FC<ControlsProps> = ({ onControlClick, isHintEnable
         icon={<Icons.Undo className="w-7 h-7" />}
         label="Undo"
         onClick={() => onControlClick('undo')}
-        disabled={isPostGame}
+        disabled={isPostGame || !enableTakebacks}
       />
     </div>
   );
