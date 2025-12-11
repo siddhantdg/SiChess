@@ -119,14 +119,14 @@ Perfect for players of all levels—from beginners taking their first steps to m
   <img src="./assets/game-ui.png" alt="Game UI Portrait" width="30%" />
 </p>
 
-<em>Mobile Interface: Landing • Setup • Gameplay</em>
+<em>Landing • Setup • Gameplay</em>
 
 ---
 
 ### **Desktop Experience**
 <img src="./assets/desktop-gameplay.png" alt="Desktop Gameplay" width="90%" />
 
-<em>Desktop Interface: Full-featured layout with move history sidebar and analysis tools</em>
+<em>Full-featured layout with move history sidebar and analysis tools</em>
 
 </div>
 
@@ -184,23 +184,23 @@ sichess/
 │   └── assets/
 │       ├── pieces/            # Chess piece images
 │       └── sounds/            # Game audio files
-├── src/
-│   ├── App.tsx                # Main application component
-│   ├── types.ts               # TypeScript definitions
-│   ├── components/            # React components
-│   │   ├── Board.tsx          # Chess board with drag-drop
-│   │   ├── GameOverModal.tsx  # End game interface
-│   │   ├── GameReviewModal.tsx # Analysis summary
-│   │   ├── NameInputModal.tsx # Game setup
-│   │   └── ...                # 20+ specialized components
-│   ├── hooks/
-│   │   ├── useChessGame.ts    # Core game state logic
-│   │   └── useViewport.ts     # Responsive layout
-│   └── services/
-│       ├── chessEngine.ts     # Stockfish integration
-│       ├── analysisService.ts # Game analysis logic
-│       └── soundManager.ts    # Audio playback
+├── components/                # React components
+│   ├── Board.tsx              # Chess board with drag-drop
+│   ├── GameOverModal.tsx      # End game interface
+│   ├── GameReviewModal.tsx    # Analysis summary
+│   ├── NameInputModal.tsx     # Game setup
+│   └── ...                    # 20+ specialized components
+├── hooks/
+│   ├── useChessGame.ts        # Core game state logic
+│   └── useViewport.ts         # Responsive layout
+├── services/
+│   ├── chessEngine.ts         # Stockfish integration
+│   ├── analysisService.ts     # Game analysis logic
+│   └── soundManager.ts        # Audio playback
+├── App.tsx                    # Main application component
+├── types.ts                   # TypeScript definitions
 ├── index.html
+├── index.tsx
 ├── vite.config.ts
 └── package.json
 ```
@@ -284,6 +284,7 @@ See the `LICENSE` file for full legal terms.
 **Siddhant** - [GitHub Profile](https://github.com/siddhantdg)
 
 **Email:** [siddhantdigraje77@gmail.com](mailto:siddhantdigraje77@gmail.com)
+
 **Project Link:** [https://github.com/siddhantdg/sichess](https://github.com/siddhantdg/sichess)
 
 ---
